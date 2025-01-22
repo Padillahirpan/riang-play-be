@@ -14,7 +14,7 @@ export const userRoute = new OpenAPIHono()
                description: 'Artist get all users',
             },
             404: {
-               description: 'No users found',
+               description: 'User not found',
             },
          },
          tags: API_TAG,
@@ -42,22 +42,29 @@ export const userRoute = new OpenAPIHono()
                description: 'Successfully get the user by id',
             },
             404: {
-               description: 'No users found',
+               description: 'User not found',
             },
          },
          tags: API_TAG,
       },
       async (c) => {
          const userId = Number(c.req.param('id'));
-         const user = await userService.getUserById(userId);
+         try {
+            const user = await userService.getUserById(userId);
 
-         return c.json(
-            {
-               status: 'success',
-               message: 'Successfully get the user',
-               data: user,
-            },
-            200
-         );
+            return c.json(
+               {
+                  status: 'success',
+                  message: 'Successfully get the user',
+                  data: user,
+               },
+               200
+            );
+         } catch (error: Error | any) {
+            return c.json({ 
+               message: "Get user failed", 
+               error: error.message 
+            }, 400)
+         }
       }
    );
