@@ -1,10 +1,15 @@
 {
   "name": "riang-play-app",
   "scripts": {
-    "dev": "bun run --hot src/index.ts"
+    "dev": "bun run --hot src/index.tsx"
   },
   "dependencies": {
-    "hono": "^4.6.17"
+    "@hono/zod-openapi": "^0.18.3",
+    "@prisma/client": "^6.2.1",
+    "hono": "^4.6.17",
+    "prettier": "^3.4.2",
+    "prisma": "^6.2.1",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/bun": "latest"
