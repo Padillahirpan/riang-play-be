@@ -7,6 +7,7 @@ import { swaggerUI } from '@hono/swagger-ui';
 import { cors } from 'hono/cors';
 
 const app = new OpenAPIHono();
+app.use('/api/*', cors());
 app.route('api/auth', authRoute);
 app.route('api/users', userRoute);
 app.route('api/products', productRoute);
