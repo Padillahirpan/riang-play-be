@@ -24,3 +24,18 @@ export const verifyToken = async(token: string) => {
       return null;
    }
 }
+
+export const decodeTokenWithId = async (token: string) => {
+   try {
+      const isTokenValid = await verifyToken(token)
+      if (!isTokenValid) {
+         return null;
+      }
+      const decode = jwt.decode(token) as { userId: number };
+      
+      return decode.userId;
+   } catch (error) {
+      return null;
+   }
+
+ };
