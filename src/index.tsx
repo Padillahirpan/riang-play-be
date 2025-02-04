@@ -2,12 +2,14 @@ import { OpenAPIHono } from '@hono/zod-openapi';
 import { userRoute } from './features/user/route';
 import { authRoute } from './features/auth/route';
 import { productRoute } from './features/product/route';
+import { cartRoute } from './features/cart/route';
 
 const app = new OpenAPIHono();
 
 app.route('api/auth', authRoute);
 app.route('api/users', userRoute);
 app.route('api/products', productRoute);
+app.route('api/cart', cartRoute);
 app.get('/', (c) => {
    return c.html(
       <html lang="en">
