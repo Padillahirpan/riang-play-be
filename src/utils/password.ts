@@ -10,9 +10,9 @@ export const verifyPassword = async(
    hashPassword: string,
    requestPassword: string
 ) => {
+   
    const isPasswordMatch = await verify(requestPassword, hashPassword);
-   console.log("this verify password:",isPasswordMatch);
-
+   
    return isPasswordMatch;
 }
 

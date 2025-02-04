@@ -9,7 +9,6 @@ const getSecretKey = async() => {
 export const generateToken = async(userId: number) => {
    const secretKey = await getSecretKey();
 
-   console.log('this is secret key:', secretKey);
    const token = jwt.sign({ userId: userId }, secretKey, { expiresIn: '24h' });
    process.env.TOKEN_SECRET_KEY
    return token;

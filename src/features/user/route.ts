@@ -11,7 +11,7 @@ export const userRoute = new OpenAPIHono()
          description: 'Get all users',
          responses: {
             200: {
-               description: 'Artist get all users',
+               description: 'Successfully get the users',
             },
             404: {
                description: 'User not found',
