@@ -88,3 +88,15 @@ export async function updateProduct(
 
    return updatedProduct;
 }
+
+export async function removeProduct(
+   productId: number,
+) {
+   const deletedProduct = await prisma.product.deleteMany({
+      where: {
+         id: productId
+      },
+   });
+
+   return deletedProduct;
+}

@@ -185,4 +185,47 @@ export const productRoute = new OpenAPIHono()
             );
          }
       }
+   )
+   .openapi(
+      {
+         method: 'delete',
+         path: '/{id}',
+         description: 'Delete the product',
+         middleware: [checkUserRoleAsAdmin()],
+         responses: {
+            201: {
+               description: 'Delete the product successfully',
+            },
+            400: {
+               description: 'Invalid input',
+            },
+         },
+         tags: API_TAG,
+      },
+      async (c) => {
+         try {
+            const productId = Number(c.req.param('id'));
+
+            const updatedProduct = await productService.removeProduct(
+               productId,
+            );
+
+            return c.json(
+               {
+                  status: 'success',
+                  message: 'Product deleted',
+                  data: updatedProduct,
+               },
+               200
+            );
+         } catch (error: Error | any) {
+            return c.json(
+               {
+                  message: 'Delete product failed',
+                  error: error.message,
+               },
+               400
+            );
+         }
+      }
    );
