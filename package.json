@@ -8,6 +8,7 @@
     "@hono/zod-openapi": "^0.18.3",
     "@prisma/client": "^6.2.1",
     "argon2": "^0.41.1",
+    "cloudinary": "^2.5.1",
     "hono": "^4.6.17",
     "jsonwebtoken": "^9.0.2",
     "prettier": "^3.4.2",
