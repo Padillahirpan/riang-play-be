@@ -5,9 +5,18 @@ import { productRoute } from './features/product/route';
 import { cartRoute } from './features/cart/route';
 import { swaggerUI } from '@hono/swagger-ui';
 import { cors } from 'hono/cors';
+import { v2 as cloudinary } from 'cloudinary';
 
 const app = new OpenAPIHono();
 app.use('/api/*', cors());
+app.use(async (_c, next) => {
+   cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+   });
+   await next();
+});
 app.route('api/auth', authRoute);
 app.route('api/users', userRoute);
 app.route('api/products', productRoute);
