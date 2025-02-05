@@ -1,6 +1,12 @@
 import { OpenAPIHono } from '@hono/zod-openapi';
 import * as productService from './service';
-import { createNewProductSchema, getProductsWithQuerySchema, NewProductType } from './schema';
+import {
+   createNewProductSchema,
+   getProductsWithQuerySchema,
+   updateNewProductSchema,
+} from './schema';
+import { parseBody } from 'hono/utils/body';
+import { checkUserRoleAsAdmin } from '../../middlewares/check_user_role';
 
 const API_TAG = ['Products'];
 
@@ -11,7 +17,7 @@ export const productRoute = new OpenAPIHono()
          path: '/',
          description: 'Get all products',
          request: {
-            query: getProductsWithQuerySchema
+            query: getProductsWithQuerySchema,
          },
          responses: {
             200: {
@@ -31,7 +37,7 @@ export const productRoute = new OpenAPIHono()
          const products = await productService.getProducts(
             search,
             sortBy,
-            sortOrder,
+            sortOrder
          );
 
          return c.json(
@@ -73,53 +79,110 @@ export const productRoute = new OpenAPIHono()
                200
             );
          } catch (error: Error | any) {
-            return c.json({ 
-               message: "Get product failed", 
-               error: error.message 
-            }, 400)
+            return c.json(
+               {
+                  message: 'Get product failed',
+                  error: error.message,
+               },
+               400
+            );
          }
       }
    )
    .openapi(
-         {
-            method: 'post',
-            path: '/',
-            description: 'Create new product',
-            request: {
-               body: {
-                  content: {
-                     "application/json": {
-                        schema: createNewProductSchema,
-                     },
+      {
+         method: 'post',
+         path: '/',
+         description: 'Create new product',
+         middleware: [checkUserRoleAsAdmin()],
+         request: {
+            body: {
+               content: {
+                  'application/json': {
+                     schema: createNewProductSchema,
                   },
                },
             },
-            responses: {
-               201: {
-                  description: 'Add new product successfully',
-               },
-               400: {
-                  description: 'Invalid input',
-               },
-            },
-            tags: API_TAG,
          },
-         async (c) => {
-            try {
-               const body = c.req.valid("json")
-               const product = await productService.createProduct(body)
-   
-               return c.json({ 
+         responses: {
+            201: {
+               description: 'Add new product successfully',
+            },
+            400: {
+               description: 'Invalid input',
+            },
+         },
+         tags: API_TAG,
+      },
+      async (c) => {
+         try {
+            const body = c.req.valid('json');
+            const product = await productService.createProduct(body);
+
+            return c.json(
+               {
                   status: 'success',
-                  message: "Product added", 
+                  message: 'Product added',
                   data: product,
-   
-               }, 201)
-           } catch (error: Error | any) {
-               return c.json({ 
-                  message: "Added product failed", 
-                  error: error.message 
-               }, 400)
-           }
+               },
+               201
+            );
+         } catch (error: Error | any) {
+            return c.json(
+               {
+                  message: 'Added product failed',
+                  error: error.message,
+               },
+               400
+            );
          }
-      )
+      }
+   )
+   .openapi(
+      {
+         method: 'put',
+         path: '/{id}',
+         description: 'Update the product',
+         middleware: [checkUserRoleAsAdmin()],
+         responses: {
+            201: {
+               description: 'Update the product successfully',
+            },
+            400: {
+               description: 'Invalid input',
+            },
+         },
+         tags: API_TAG,
+      },
+      async (c) => {
+         try {
+            const user = c.get('user') as { id: string };
+            const productId = Number(c.req.param('id'));
+            const body = await parseBody(c.req);
+            const parsedBody = updateNewProductSchema.parse(body);
+
+            const updatedProduct = await productService.updateProduct(
+               Number(user.id),
+               productId,
+               parsedBody
+            );
+
+            return c.json(
+               {
+                  status: 'success',
+                  message: 'Product updated',
+                  data: updatedProduct,
+               },
+               201
+            );
+         } catch (error: Error | any) {
+            return c.json(
+               {
+                  message: 'Added product failed',
+                  error: error.message,
+               },
+               400
+            );
+         }
+      }
+   );

@@ -31,17 +31,16 @@ export const authRoute = new OpenAPIHono()
       },
       async (c) => {
          try {
-            const body = c.req.valid("json")
-            const user = await authService.register(body)
+            const body = c.req.valid("json");
+            const user = await authService.register(body);
 
             return c.json({ 
                status: 'success',
                message: "User registered", 
                data: user,
-
-            }, 201)
+            }, 201);
         } catch (error: Error | any) {
-            return c.json({ message: "Registration failed", error: error.message }, 400)
+            return c.json({ message: "Registration failed", error: error.message }, 400);
         }
       }
    )
@@ -71,19 +70,19 @@ export const authRoute = new OpenAPIHono()
       },
       async (c) => {
          try {
-            const body = c.req.valid("json")
-            const { token, user } = await authService.login(body)
+            const body = c.req.valid("json");
+            const { token, user } = await authService.login(body);
 
             return c.json({
                   status: 'success',
                   message: "Login successful",
-                  data: { token, user }
-             }, 200)
+                  data: { token, user },
+             }, 200);
         } catch (error: Error | any) {
             return c.json({ 
                message: "Login failed", 
                error: error.message 
-            }, 400)
+            }, 400);
         }
       }
    )
