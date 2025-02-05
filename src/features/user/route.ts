@@ -29,7 +29,7 @@ export const userRoute = new OpenAPIHono()
                message: 'Successfully get the users',
                data: users,
             },
-            200
+            200,
          );
       }
    )
@@ -62,13 +62,13 @@ export const userRoute = new OpenAPIHono()
                   message: 'Successfully get the user',
                   data: result,
                },
-               200
+               200,
             );
          } catch (error: Error | any) {
             return c.json({ 
                message: "Get user failed", 
                error: error.message 
-            }, 400)
+            }, 400);
          }
       }
    );

@@ -27,7 +27,7 @@ export const verifyToken = async(token: string) => {
 
 export const decodeTokenWithId = async (token: string) => {
    try {
-      const isTokenValid = await verifyToken(token)
+      const isTokenValid = await verifyToken(token);
       if (!isTokenValid) {
          return null;
       }
