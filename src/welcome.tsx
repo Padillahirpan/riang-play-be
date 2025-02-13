@@ -15,7 +15,7 @@ export function WelcomePage() {
                The OpenAPI Specification for the RiangPlay products API offers a
                detailed description of the API's services. It can be accessed at
                the path{' '}
-               <code className="bg-gray-200 rounded px-2 py-1">/doc</code>.
+               <code className="bg-gray-200 rounded px-2 py-1">/ui</code>.
             </p>
             <p className="text-lg text-gray-700 mb-6">
                For a more interactive experience, you can use SwaggerUI. It
