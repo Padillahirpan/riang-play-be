@@ -79,8 +79,22 @@ export async function getUserById(id: number) {
        where: {
           id: id,
        },
+       include: { carts: {
+         include: {
+            cartItems: true
+         }
+       }},
+
    });
  
-   return user;
+   const result = {
+      'id': user?.id,
+      'name': user?.name,
+      'email': user?.email,
+      'createdAt': user?.createdAt,
+      'updatedAt': user?.updatedAt,
+      'totalCart': user?.carts[0].cartItems.length
+   }
+   return result;
 }
 
