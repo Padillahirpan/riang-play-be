@@ -67,6 +67,8 @@ export async function updateProduct(
       productId
    ) : null
 
+   console.log("imageResponse", imageResponse);
+
    const updateRequest: UpdateRequest = {
       name: data.name,
       price: data.price,

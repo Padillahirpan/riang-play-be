@@ -7,10 +7,10 @@ import { generateToken } from "../../utils/token";
 const prisma = new PrismaClient();
 
 export async function register(
-   { username, email, password }: { username: string, email: string, password: string }
+   { name, email, password }: { name: string, email: string, password: string }
 ) {
 
-   const existingUser = await isUserExists(email, username);
+   const existingUser = await isUserExists(email, name);
    if(existingUser) {
       throw new Error('User already exists');
    }
@@ -19,7 +19,7 @@ export async function register(
 
    const user = await prisma.user.create({
       data: {
-         name: username,
+         name: name,
          email: email,
          password: hashedPassword,
       },
@@ -72,5 +72,15 @@ export async function login(
       user: { id: user.id, name: user.name, email: user.email }
    };
 
+}
+
+export async function getUserById(id: number) {
+   const user = await prisma.user.findUnique({
+       where: {
+          id: id,
+       },
+   });
+ 
+   return user;
 }
 

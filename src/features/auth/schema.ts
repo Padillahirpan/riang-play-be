@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const registerSchema = z.object({
-   username: z.string().min(4).max(100).openapi({ example: "new_user" }),
+   name: z.string().min(4).max(100).openapi({ example: "new_user" }),
    email: z.string().email().openapi({ example: "user@example.com" }),
    password: z.string().min(8).openapi({ example: "password123" }),
 });

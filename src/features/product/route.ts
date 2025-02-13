@@ -7,11 +7,21 @@ import {
 } from './schema';
 import { parseBody } from 'hono/utils/body';
 import { checkUserRoleAsAdmin } from '../../middlewares/check_user_role';
+import { v2 as cloudinary } from 'cloudinary';
 
 const API_TAG = ['Products'];
 
-export const productRoute = new OpenAPIHono()
-   .openapi(
+const productRoute = new OpenAPIHono()
+
+productRoute.use(async (_, next) => {
+   cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+   });
+   await next();
+});
+productRoute.openapi(
       {
          method: 'get',
          path: '/',
@@ -206,9 +216,8 @@ export const productRoute = new OpenAPIHono()
          try {
             const productId = Number(c.req.param('id'));
 
-            const updatedProduct = await productService.removeProduct(
-               productId,
-            );
+            const updatedProduct =
+               await productService.removeProduct(productId);
 
             return c.json(
                {
@@ -229,3 +238,5 @@ export const productRoute = new OpenAPIHono()
          }
       }
    );
+
+export default productRoute;

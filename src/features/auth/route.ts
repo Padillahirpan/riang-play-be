@@ -1,6 +1,7 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { loginSchema, registerSchema } from "./schema";
 import * as authService from './service';
+import { checkUserToken } from "../../middlewares/check_user_token";
 
 const API_TAG = ['Auth'];
 
@@ -86,3 +87,42 @@ export const authRoute = new OpenAPIHono()
         }
       }
    )
+   .openapi(
+      {
+         method: 'get',
+         path: '/me',
+         description: 'Get user profile',
+         security: [{ BearerAuth: []}],
+         middleware: [checkUserToken()],
+         responses: {
+            200: {
+               description: 'Successfully get the user by id',
+            },
+            404: {
+               description: 'User not found',
+            },
+         },
+         tags: API_TAG,
+      },
+      async (c) => {
+         try {
+            const user = c.get("user") as { id: number };
+
+            const result = await authService.getUserById(user.id);
+
+            return c.json(
+               {
+                  status: 'success',
+                  message: 'Successfully get the user',
+                  data: result,
+               },
+               200,
+            );
+         } catch (error: Error | any) {
+            return c.json({ 
+               message: "Get user failed", 
+               error: error.message 
+            }, 400);
+         }
+      }
+   );
