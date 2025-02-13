@@ -1,22 +1,24 @@
 {
-  "name": "riang-play-app",
-  "scripts": {
-    "dev": "bun run --hot src/index.tsx"
-  },
-  "dependencies": {
-    "@hono/swagger-ui": "^0.5.0",
-    "@hono/zod-openapi": "^0.18.3",
-    "@prisma/client": "^6.2.1",
-    "argon2": "^0.41.1",
-    "cloudinary": "^2.5.1",
-    "hono": "^4.6.17",
-    "jsonwebtoken": "^9.0.2",
-    "prettier": "^3.4.2",
-    "prisma": "^6.2.1",
-    "zod": "^3.24.1"
-  },
-  "devDependencies": {
-    "@types/bun": "latest",
-    "@types/jsonwebtoken": "^9.0.7"
-  }
+   "name": "riang-play-app",
+   "scripts": {
+      "dev": "bun run --hot src/index.tsx",
+      "prestart": "bunx prisma migrate deploy",
+      "start": "bun run src/index.tsx"
+   },
+   "dependencies": {
+      "@hono/swagger-ui": "^0.5.0",
+      "@hono/zod-openapi": "^0.18.3",
+      "@prisma/client": "^6.2.1",
+      "argon2": "^0.41.1",
+      "cloudinary": "^2.5.1",
+      "hono": "^4.6.17",
+      "jsonwebtoken": "^9.0.2",
+      "prettier": "^3.4.2",
+      "prisma": "^6.2.1",
+      "zod": "^3.24.1"
+   },
+   "devDependencies": {
+      "@types/bun": "latest",
+      "@types/jsonwebtoken": "^9.0.7"
+   }
 }
